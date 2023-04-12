@@ -1,0 +1,14 @@
+{% extends "main/base.html" %}
+{% block content %}
+<form method="post" action="">
+    {% csrf_token %}
+<textarea  name="interpreter" rows="20" cols="60"></textarea>
+<input type="submit" value="Выполнить" name="enter">
+</form>
+<br>
+{% if posts %}
+{% for i in posts %}
+{{ i }}<br>
+{% endfor %}
+{% endif %}
+{% endblock content %}
