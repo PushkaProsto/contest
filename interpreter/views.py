@@ -8,7 +8,7 @@ def index(request):
         code = request.POST['interpreter']
         with open('1.py', 'w', encoding='utf8') as f:            
             f.write(code)
-        k = subprocess.run('python 1.py', stdout=subprocess.PIPE)
+        k = subprocess.run('python3 1.py', stdout=subprocess.PIPE)
         print(str(k))
         with open('1.txt', 'w', encoding='utf8') as f:
             f.write(str(k))
