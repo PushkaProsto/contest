@@ -8,7 +8,7 @@ def index(request):
     if request.method == 'POST':        
         code = request.POST['interpreter']
         process = Popen(['python', '-c', code], stdin=PIPE, stdout=PIPE, stderr=PIPE)
-        output, error = process.communicate(input=input_data[i].encode())
+        output, error = process.communicate(input='test'.encode())
         
         context = {'1':'1'}
         
