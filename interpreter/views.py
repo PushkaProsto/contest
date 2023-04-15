@@ -15,7 +15,7 @@ def index(request):
         
         try:
             encoding = chardet.detect(output)['encoding']
-            contest['post'] = output.decode(encoding).strip()            
+            contest['posts'] = output.decode(encoding).strip()            
         except:
             pass
         try:
