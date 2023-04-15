@@ -1,25 +1,32 @@
 from django.shortcuts import render
-import subprocess
+from subprocess import Popen, PIPE
 from django.contrib.auth.decorators import login_required
+import chardet
 
 @login_required
 def index(request): 
     if request.method == 'POST':        
         code = request.POST['interpreter']
-        with open('1.py', 'w', encoding='utf8') as f:            
-            f.write(code)
-        k = subprocess.run('python3 1.py', stdout=subprocess.PIPE)
-        print(str(k))
-        with open('1.txt', 'w', encoding='utf8') as f:
-            f.write(str(k))
-        context = {
-            'posts': str(k).split("stdout=b'")[-1][:-6].split('\\r\\n')
-        }
-        print(context)
+        process = Popen(['python', '-c', code], stdin=PIPE, stdout=PIPE, stderr=PIPE)
+        output, error = process.communicate(input=input_data[i].encode())
         
+        context = {            
+        }
+        
+        try:
+            encoding = chardet.detect(output)['encoding']
+            contest['post'] = output.decode(encoding).strip()            
+        except:
+            pass
+        try:
+            encoding = chardet.detect(error)['encoding']
+            contest['error'] = error.decode(encoding).strip())
+        except:
+            pass   
     
     else:
         context = {
-            'posts': ''
+            'posts': '',
+            'error': '',
         }
     return render(request, 'interpreter/index.html', context)
