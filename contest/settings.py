@@ -61,14 +61,7 @@ ROOT_URLCONF = 'contest.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates'),
-                 os.path.join(BASE_DIR, 'core/templates'),
-                 os.path.join(BASE_DIR, 'main/templates'),
-                 os.path.join(BASE_DIR, 'users/templates'),
-                 os.path.join(BASE_DIR, 'guestbook/templates'),
-                 os.path.join(BASE_DIR, 'catalog/templates'),
-                 os.path.join(BASE_DIR, 'comments_list/templates'),
-                 os.path.join(BASE_DIR, 'interpreter/templates'),],
+        'DIRS': [os.path.join(BASE_DIR, 'templates'),],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
