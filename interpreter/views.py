@@ -10,8 +10,7 @@ def index(request):
         process = Popen(['python', '-c', code], stdin=PIPE, stdout=PIPE, stderr=PIPE)
         output, error = process.communicate(input=input_data[i].encode()
         
-        context = {            
-        }
+        context = {:}
         
         try:
             encoding = chardet.detect(output)['encoding']
