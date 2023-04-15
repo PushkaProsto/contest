@@ -14,6 +14,7 @@
   {% if user.choice == '2' and task.prepod == user.username %}
   <form method="POST" action="{% url 'delete_task' task.pk %}">
     {% csrf_token %}
+    <br>
     <button type="submit" class="btn btn-danger btn-sm">
       Удалить задачу
     </button>
