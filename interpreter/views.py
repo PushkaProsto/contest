@@ -11,10 +11,11 @@ def index(request):
         output, error = process.communicate(input='test'.encode())
         
         context = {'1':'1'}
-        
+        posts = []
         try:
             encoding = chardet.detect(output)['encoding']
-            context['posts'] = output.decode(encoding).strip()            
+            posts.append(output.decode(encoding).strip())
+            context['posts'] =  posts         
         except:
             pass
         try:
