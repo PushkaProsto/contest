@@ -2,7 +2,7 @@
 
 {% block content %}
   <h1>Решение </h1>
-  <p>Задача: {{ submission.task.name }}</p>
+  <p>Задача: {{ submission.task.name }}<p>
   <p>Статус: {{ submission.get_status_display }}</p>
 
   {% if error %}
