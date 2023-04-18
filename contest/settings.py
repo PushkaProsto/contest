@@ -117,7 +117,7 @@ LANGUAGES = (
 LOCALE_PATHS = [
     BASE_DIR / 'locale',
 ]
-LANGUAGE_CODE = 'Ru-ru'
+#LANGUAGE_CODE = 'Ru-ru'
 
 TIME_ZONE = 'UTC'
 
