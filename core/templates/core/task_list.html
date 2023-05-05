@@ -6,15 +6,18 @@
       <label for="search">Поиск</label>
       <input type="text" class="form-control" id="search" name="q" value="{{ request.GET.q }}">
   </div>
+  <button type="submit" class="btn btn-primary" name="action" value="search">Поиск</button>
   <div class="form-group">
       <label for="sort">Сортировать по</label>
       <select class="form-control" id="sort" name="sort">
           <option value="name" {% if sort == 'name' %}selected{% endif %}>Названию</option>
           <option value="prepod" {% if sort == 'prepod' %}selected{% endif %}>Автору</option>
+          <option value="language" {% if sort == 'language' %}selected{% endif %}>Языку</option>
          
       </select>
   </div>
-  <button type="submit" class="btn btn-primary">Поиск</button>
+
+  <button type="submit" class="btn btn-primary" name="action" value="sort">Сортировка</button>
 </form>
   <div class="container my-5">
     <div class="row">
@@ -25,7 +28,7 @@
             
             <div class="card-header">
               <h5 class="mb-0">{{ task.name }} </h5><br>
-              <a href="{% url 'author_tasks' task.prepod %}" class="mb-0">Автор {{ task.prepod }}</a>
+              <a href="{% url 'author_tasks' task.prepod %}" class="mb-0">Автор {{ task.prepod }}</a> {{ task.get_language }} 
             </div>
             <div class="card-body">
               <p class="card-text">{{ task.description|truncatechars:50 }}</p>

@@ -6,6 +6,7 @@ from .forms import SubmissionForm, TaskForm
 from django.contrib.auth.decorators import login_required
 import chardet
 from django.core.paginator import Paginator
+from django.db.models import Q
 
 
 @login_required
@@ -13,10 +14,10 @@ def task_create(request):
     if request.user.choice != '2':
         # Если пользователь не является преподавателем, перенаправляем на страницу с ошибкой.
         return render(request, 'core/error.html', {'message': 'Вы не имеете прав для создания задач.'})
-    form = TaskForm()
-
+    user_language = request.user.language or 'python'   
+    form = TaskForm(user_language=user_language) 
     if request.method == 'POST':
-        form = TaskForm(request.POST)
+        form = TaskForm(request.POST, user_language=user_language)
         if form.is_valid():
             form.prepod = request.user.username
             task = form.save()
@@ -26,6 +27,7 @@ def task_create(request):
 
     return render(request, 'core/task_create.html', {'form': form})
 def task_list(request):
+    
     sort = request.GET.get('sort', 'name')  # получаем параметр сортировки из GET-запроса
     if sort == 'prepod':
         tasks = Task.objects.all().order_by('prepod')  # сортируем по полю "prepod"
@@ -33,7 +35,7 @@ def task_list(request):
         tasks = Task.objects.all().order_by('name')  # сортируем по умолчанию по полю "name"
     q = request.GET.get('q')
     if q:
-        tasks = tasks.filter(name__icontains=q)
+        tasks = tasks.filter(Q(name__icontains=q) | Q(language__icontains=q) | Q(prepod__icontains=q))
 
     paginator = Paginator(tasks,5)
     page_number = request.GET.get('page', 1)
@@ -44,7 +46,8 @@ def task_list(request):
         'tasks': page.object_list,
         'page': page,
         'sort': sort, 
-        'q': q}
+        'q': q,
+        }
     return render(request, 'core/task_list.html', context)
 
 
@@ -76,13 +79,20 @@ def task_detail(request, slug):
             return redirect('submission_detail', pk=submission.pk)
     
     return render(request, 'core/task_detail.html', {'task': task, 'form': form})
-
-
+#'kotlinc', '-script'
+#'python', '-c'
+#'node', '-e'
 @login_required
 def submission_detail(request, pk):
     submission = get_object_or_404(Submission, pk=pk)
     task = submission.task
     submission.prepod = submission.task.prepod
+    language = {'python': '-c',
+                'node': '-e',
+                'java': 'Main',
+                'kotlinc': '-script'
+    }
+    
    
     input_data = (task.input.strip(), task.input1.strip(), task.input2.strip(),)
     expected_output = (task.output.strip(), task.output1.strip(), task.output2.strip(),)
@@ -93,10 +103,19 @@ def submission_detail(request, pk):
     # Выполняем код студента в отдельном процессе с использованием входных данных
     # и получаем результат выполнения
     for i in range(3):
-        if input_data[i] and expected_output[i]:
-            
+        if input_data[i] and expected_output[i]:            
             from subprocess import Popen, PIPE
-            process = Popen(['python', '-c', submission.code], stdin=PIPE, stdout=PIPE, stderr=PIPE)
+            from os import path, getcwd
+            if task.language == 'java':
+                java_file_path = path.join(getcwd(), 'Main.java')
+                with open(java_file_path, 'w') as f:
+                    f.write(submission.code)
+                compile_process = Popen(['javac', java_file_path], stderr=PIPE)
+                compile_output, compile_error = compile_process.communicate()
+                if compile_error:
+                    error.append(compile_error.decode('utf-8').strip())
+                    continue
+            process = Popen([task.language, language[task.language], submission.code], stdin=PIPE, stdout=PIPE, stderr=PIPE)
             output_i, error_i = process.communicate(input=input_data[i].encode())
             try:
                 encoding = chardet.detect(output_i)['encoding']
@@ -109,13 +128,7 @@ def submission_detail(request, pk):
                 error.append(error_i.decode(encoding).strip())
             except:
                 pass
-            
-            
-
-            # Сравниваем полученный результат с ожидаемым результатом из задания
-            
-            
-            
+                        
     if False in passed:
         passed = False
     for i in error:

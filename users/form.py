@@ -24,8 +24,11 @@ class UserRegisterForm(UserCreationForm):
 class UserProfileForm(forms.ModelForm):
     class Meta:
         model = User
-        fields = ['first_name', 'last_name']
-
+        fields = ['first_name', 'last_name', 'language']
+        
+    languages = (('python','Python'), ('kotlinc','Kotlin'), ('node','JavaScript'),('javac', 'Java'))
+    language = forms.ChoiceField(choices = languages, label= 'Язык')
+    
     def __init__(self, *args, **kwargs):
         super(UserProfileForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
@@ -33,8 +36,9 @@ class UserProfileForm(forms.ModelForm):
         self.helper.add_input(Submit('submit', 'Сохранить'))
         self.helper.layout = Layout(
             Fieldset(
-                'Изменить информацию профиля',
+                'Изменить информацию профиля',                
                 'first_name',
-                'last_name'
+                'last_name',
+                'language'
             ),
         )

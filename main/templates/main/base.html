@@ -26,9 +26,9 @@
         <li class="nav-item">
           <a class="nav-link" href="{% url 'task_create' %}">Создать задание</a>
         </li>
-        <li class="nav-item">
+        <!-- <li class="nav-item">
           <a class="nav-link" href="{% url 'guestbook' %}">Гостевая</a>
-        </li>
+        </li> -->
         {% if user.choice == '2' %}
         <li class="nav-item">
           <a class="nav-link" href="{% url 'catalog' %}">Ваши задачи</a></li>
@@ -39,9 +39,9 @@
           <a class="nav-link" href="{% url 'catalog' %}">Ваши решения</a></li>
           {% endif %}
               
-          <li class="nav-item">
+          <!-- <li class="nav-item">
             <a class="nav-link" href="{% url 'interpreter' %}">Интерпретатор</a></li>
-        <li class="nav-item">
+        <li class="nav-item"> -->
               <button class="btn btn-link nav-link" onclick="toggleTheme()">Switch Theme</button>
           </li>
          
@@ -61,7 +61,7 @@
     </div>
   </nav>
        
-    </header>
+    
     <main role="main" class="container">
       <div class="row">
         
@@ -89,7 +89,7 @@
         </div> -->
       </div>
 
-    </main>
+    
     <!-- Футер закреплен внизу, независимо от количества постов на странице -->
     
 
@@ -118,8 +118,10 @@
       }
   </script>
     {% block extra_js %}{% endblock %}
-</body>
+
 <footer>
   <p><a href="{% url 'blog-home' %}">© ITcontestKG 2023</a></p>
 </footer>
+</main>
+</body>
 </html>

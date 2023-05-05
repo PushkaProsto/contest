@@ -73,6 +73,7 @@ body {
     bottom: 0;  
     width: 100%; 
     text-align: center;
+    height: 5vh;
     
   }
   .home{
@@ -87,5 +88,8 @@ body {
   
   .theme-switch:hover {
     color: #c76707;
+  }
+  main {
+    padding-bottom: 6vh; /* высота футера */
   }
   

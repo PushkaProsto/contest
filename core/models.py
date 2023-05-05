@@ -3,6 +3,7 @@ from pytils.translit import slugify
 from django.urls import reverse
 
 class Task(models.Model):
+    language = models.CharField(("language"), max_length=150, blank=True)
     name = models.CharField(max_length=200, unique=True)
     description = models.TextField()
     input = models.TextField()
@@ -14,6 +15,7 @@ class Task(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     prepod = models.CharField(max_length=150, null=True) 
+    
     slug = models.SlugField(unique=True)
 
     def save(self, *args, **kwargs):
@@ -25,6 +27,15 @@ class Task(models.Model):
     
     def get_absolute_url(self):
         return reverse('task_detail', kwargs={'slug': self.slug})
+    
+    def get_language(self):
+        LANGUAGE_CHOICES = {
+        'python': 'Python',
+        'kotlinc': 'Kotlin',
+        'node': 'JavaScript',
+        'java': 'Java',
+    }
+        return LANGUAGE_CHOICES.get(self.language)
     
 def slugify_task_name(sender, instance, **kwargs):
     instance.slug = slugify(instance.name)
@@ -45,8 +56,6 @@ class Submission(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     student = models.CharField(null=True, max_length=150)
     prepod = models.CharField(null=True, max_length=150)
-    
-    
 
     def __str__(self):
         return f'{self.id} - {self.task.name} - {self.get_status_display()}'

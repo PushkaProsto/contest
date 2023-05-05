@@ -113,10 +113,14 @@ body {
     bottom: 0;  
     width: 100%; 
     text-align: center;
+    height: 5vh;
     
   }
   .home{
     
     margin-top: 20vh;
     text-align: center;
+  }
+  main {
+    padding-bottom: 6vh; /* высота футера */
   }
