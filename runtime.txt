@@ -1,1 +1,18 @@
-python-3.11.3
+from fastapi import FastAPI, Request,Form
+from random import randint
+from fastapi.templating import Jinja2Templates
+from fastapi.staticfiles import StaticFiles
+from starlette.responses import HTMLResponse
+
+templates = Jinja2Templates(directory="")
+app = FastAPI()
+@app.get("/", response_class=HTMLResponse)
+async def read_item(request: Request):
+    return templates.TemplateResponse("index.html", {"request": request})
+
+# создать объект приложения
+
+@app.post('/guess') # декоратор для GET-запроса гл. стр.
+def home(request: Request, guess: int=Form(...)):
+
+    return {'key': guess}
