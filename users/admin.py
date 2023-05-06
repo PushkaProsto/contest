@@ -9,17 +9,20 @@ from django.contrib.auth import get_user_model
 User = get_user_model()
 
 class CustomUserAdmin(UserAdmin):
+    list_display = ('username','choice')
     fieldsets = (
-        *UserAdmin.fieldsets,
-        (
-            'Additional Info', {
-                'fields': (
-                    'choice',
-                    'date',
-                ),
-            }
-        )
+        (None, {'fields': ('username', 'password')}),
+        ('Personal info', {'fields': ('first_name', 'last_name', 'email')}),
+        ('Additional Info', {
+            'fields': (
+                'choice',
+                'date',
+            ),
+        }),
+        ('Permissions', {
+            'fields': ('is_active', ),
+        }),
+        ('Important dates', {'fields': ('last_login', 'date_joined')}),
     )
-
 
 admin.site.register(User, CustomUserAdmin)

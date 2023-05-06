@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser, Permission, Group
+from django.contrib.auth.models import AbstractUser, Permission
 from django.contrib.contenttypes.models import ContentType
 from contest import settings
 from django.utils.text import slugify
@@ -9,8 +9,8 @@ from django.urls import reverse
 # group.permissions.add(permission)
 
 class User(AbstractUser):
-    choice = models.CharField(("status"), max_length=150, blank=True)
-    date = models.DateField(null=True, blank=True)
+    choice = models.CharField( max_length=150, blank=True, verbose_name='Статус', help_text='1 - Студент, 2 - Преподаватель, 3 - Администратор')
+    date = models.DateField(null=True, blank=True, verbose_name='Дата рождения')
     slug = models.SlugField(null=False, blank=True, unique=True)
     prepopulated_fields = {'slug': ('username',)}
     language = models.CharField(("language"), max_length=150, blank=True)
